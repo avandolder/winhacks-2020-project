@@ -39,20 +39,51 @@ class DataSet:
 		self.NPCCWS = []
 		self.EPCCWS = []
 
+		self.hSBRS = []
+		self.hWBRS = []
+		self.hNBRS = []
+		self.hEBRS = []
+
+		self.hSBTS = []
+		self.hWBTS = []
+		self.hNBTS = []
+		self.hEBTS = []
+
+		self.hSBLS = []
+		self.hWBLS = []
+		self.hNBLS = []
+		self.hEBLS = []
+
+		self.hSBUS = []
+		self.hWBUS = []
+		self.hNBUS = []
+		self.hEBUS = []
+
+		self.hSPCWS = []
+		self.hWPCWS = []
+		self.hNPCWS = []
+		self.hEPCWS = []
+
+		self.hSPCCWS = []
+		self.hWPCCWS = []
+		self.hNPCCWS = []
+		self.hEPCCWS = []
+
+
 
 def startsWithNum(s):
 	digset = ("1","2","3","4","5","6","7","8","9","0")
+	return not len(s) == 0
 	return s[0] in digset
 
 def getHourly(s):
 	index = 0
 	hourlySet = []
-	print(s)
 	while index < len(s) - 4:
 		try:
 			hourlySet.append(sum([int(s[i]) for i in range(index, index+4)]))
 		except ValueError:
-			print(s[index])
+			pass
 		index += 4
 	return hourlySet
 
@@ -85,13 +116,8 @@ for sheet in sheets:
 
 	for i in range(7):
 
-		#Removes additional info from beginning
-		for _ in range(4):
-			f.readline()
-
-		line = f.readline()
-
-		for _ in range(5771):
+		for _ in range(5759):
+			line = f.readline()
 			
 			# Skip non-data lines at the beginning
 			if not startsWithNum(line):
@@ -101,6 +127,8 @@ for sheet in sheets:
 			try:
 				time, SBR, SBT, SBL, SBU, SPCW, SPCCW,  WBR, WBT, WBL, WBU, WPCW, WPCCW, NBR, NBT, NBL, NBU, NPCW, NPCCW, EBR, EBT, EBL, EBU, EPCW, EPCCW = line.split(",")
 				times.append(time)
+				#print(time, SBR, SBT, SBL, SBU, SPCW, SPCCW,  WBR, WBT, WBL, WBU, WPCW, WPCCW, NBR, NBT, NBL, NBU, NPCW, NPCCW, EBR, EBT, EBL, EBU, EPCW, EPCCW)
+				#break
 
 				datasets[i].SBRS.append(SBR)
 				datasets[i].WBRS.append(WBR)
@@ -136,9 +164,43 @@ for sheet in sheets:
 			except ValueError:
 				# Chances are we hit a line that had non data information, just print and skip
 				print(line)
-				pass
+				continue
 
 
+		datasets[i].hSBRS = getHourly(datasets[i].SBRS)
+		datasets[i].hWBRS = getHourly(datasets[i].WBRS)
+		datasets[i].hNBRS = getHourly(datasets[i].NBRS)
+		datasets[i].hEBRS = getHourly(datasets[i].EBRS)
+
+		datasets[i].hSBTS = getHourly(datasets[i].SBTS)
+		datasets[i].hWBTS = getHourly(datasets[i].WBTS)
+		datasets[i].hNBTS = getHourly(datasets[i].NBTS)
+		datasets[i].hEBTS = getHourly(datasets[i].EBTS)
+
+		datasets[i].hSBLS = getHourly(datasets[i].SBLS)
+		datasets[i].hWBLS = getHourly(datasets[i].WBLS)
+		datasets[i].hNBLS = getHourly(datasets[i].NBLS)
+		datasets[i].hEBLS = getHourly(datasets[i].EBLS)
+
+		datasets[i].hSBUS = getHourly(datasets[i].SBUS)
+		datasets[i].hWBUS = getHourly(datasets[i].WBUS)
+		datasets[i].hNBUS = getHourly(datasets[i].NBUS)
+		datasets[i].hEBUS = getHourly(datasets[i].EBUS)
+		
+		datasets[i].hSPCWS = getHourly(datasets[i].SPCWS)
+		datasets[i].hWPCWS = getHourly(datasets[i].WPCWS)
+		datasets[i].hNPCWS = getHourly(datasets[i].NPCWS)
+		datasets[i].hEPCWS = getHourly(datasets[i].EPCWS)
+
+		datasets[i].hSPCCWS = getHourly(datasets[i].SPCCWS)
+		datasets[i].hWPCCWS = getHourly(datasets[i].WPCCWS)
+		datasets[i].hNPCCWS = getHourly(datasets[i].NPCCWS)
+		datasets[i].hEPCCWS = getHourly(datasets[i].EPCCWS)
+
+
+print(len(bicycleData.SBRS))
+print(datasets[0].SBRS)
+print(len(bicycleData.EPCWS))
 '''
 
 	# Just prints how many lines of data there were per sheet
